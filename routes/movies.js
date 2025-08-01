@@ -1,12 +1,12 @@
 const express = require('express');
 const multer = require('multer');
-const path = require('path');
+const path = require('path'); // ✅ Déclaré une seule fois
 const fs = require('fs');
 const Movie = require('../models/Movie');
 
 const router = express.Router();
 
-// File upload config
+// File upload setup
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const folder = `uploads/${file.fieldname}`;
@@ -17,20 +17,24 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + '-' + file.originalname);
   }
 });
+
 const upload = multer({ storage });
+
 const fields = upload.fields([
   { name: 'cover', maxCount: 1 },
   { name: 'photos', maxCount: 10 }
 ]);
 
+// Upload movie
 router.post('/', fields, async (req, res) => {
   try {
     const {
       title, description, year, duration, quality, age, downloadLink
     } = req.body;
 
-const genres = req.body.genres ? JSON.parse(req.body.genres) : [];
-const countries = req.body.countries ? JSON.parse(req.body.countries) : [];
+    const genres = req.body.genres ? JSON.parse(req.body.genres) : [];
+    const countries = req.body.countries ? JSON.parse(req.body.countries) : [];
+
     const movie = await Movie.create({
       title,
       description,
@@ -39,8 +43,8 @@ const countries = req.body.countries ? JSON.parse(req.body.countries) : [];
       quality,
       age,
       downloadLink,
-      coverPath: req.files?.cover?.[0]?.path || null,
-      photoPaths: req.files?.photos?.map(p => p.path) || [],
+      coverPath: req.files?.cover?.[0]?.path.replace(/\\/g, "/") || null,
+      photoPaths: req.files?.photos?.map(p => p.path.replace(/\\/g, "/")) || [],
       genres,
       countries
     });
@@ -53,7 +57,6 @@ const countries = req.body.countries ? JSON.parse(req.body.countries) : [];
   }
 });
 
-
 // Get all movies
 router.get('/', async (req, res) => {
   try {
@@ -63,6 +66,8 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch movies' });
   }
 });
+
+module.exports = router;
 
 // DELETE movie by ID
 // DELETE a movie
