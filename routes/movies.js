@@ -50,7 +50,7 @@ router.post('/', fields, async (req, res) => {
     });
     console.log('Saved coverPath:', movie);  // e.g., "uploads/cover/filename.jpg"
 
-console.log('Saved coverPath:', coverPath);  // e.g., "uploads/cover/filename.jpg"
+console.log('Saved coverPath:', movie.coverPath);  // e.g., "uploads/cover/filename.jpg"
     res.json({ message: 'Movie uploaded successfully', movie });
 
   } catch (error) {
