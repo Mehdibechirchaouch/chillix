@@ -16,6 +16,8 @@ router.post('/', fields, async (req, res) => {
 
     const genres = req.body.genres ? JSON.parse(req.body.genres) : [];
     const countries = req.body.countries ? JSON.parse(req.body.countries) : [];
+    const subtitles = req.body.genres ? JSON.parse(req.body.subtitles) : [];
+    const languages = req.body.genres ? JSON.parse(req.body.languages) : [];
 
     // Cloudinary provides URLs in req.files.[field][0].path
     const coverPath = req.files?.cover?.[0]?.path || null;
