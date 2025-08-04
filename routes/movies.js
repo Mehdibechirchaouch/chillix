@@ -32,7 +32,9 @@ router.post('/', fields, async (req, res) => {
       coverPath,
       photoPaths,
       genres,
-      countries
+      countries,
+      subtitles,
+      languages
     });
 
     res.json({ message: 'Movie uploaded successfully', movie });

@@ -10,10 +10,13 @@ const Movie = sequelize.define('Movie', {
   age: DataTypes.INTEGER,
   downloadLink: DataTypes.STRING,
   coverPath: DataTypes.STRING,
-  videoPath: DataTypes.STRING,
   photoPaths: DataTypes.JSON,
   countries: DataTypes.JSON,
-  genres: DataTypes.JSON
+  genres: DataTypes.JSON,
+    subtitles: DataTypes.JSON,
+      languages: DataTypes.JSON,
+
+
 });
 
 module.exports = Movie;
