@@ -48,7 +48,9 @@ router.post('/', fields, async (req, res) => {
       genres,
       countries
     });
+    console.log('Saved coverPath:', movie);  // e.g., "uploads/cover/filename.jpg"
 
+console.log('Saved coverPath:', coverPath);  // e.g., "uploads/cover/filename.jpg"
     res.json({ message: 'Movie uploaded successfully', movie });
 
   } catch (error) {
@@ -62,12 +64,12 @@ router.get('/', async (req, res) => {
   try {
     const movies = await Movie.findAll();
     res.json(movies);
+    console.log('Sending movie object with coverPath:', movie.coverPath);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch movies' });
   }
 });
 
-module.exports = router;
 
 // DELETE movie by ID
 // DELETE a movie
