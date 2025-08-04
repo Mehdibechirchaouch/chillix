@@ -2,8 +2,13 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
 const Series = sequelize.define('Series', {
-  title: { type: DataTypes.STRING },
+  title: DataTypes.STRING,
   description: DataTypes.TEXT,
+  year: DataTypes.INTEGER,
+  age: DataTypes.INTEGER,
+  Picture: DataTypes.STRING,
+  countries: DataTypes.JSON,
+  genres: DataTypes.JSON
 });
 
 module.exports = Series;

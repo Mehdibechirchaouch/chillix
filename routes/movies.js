@@ -3,29 +3,11 @@ const multer = require('multer');
 const path = require('path'); // ✅ Déclaré une seule fois
 const fs = require('fs');
 const Movie = require('../models/Movie');
+const { fields } = require('../config/cloudinary'); // adjust path accordingly
 
 const router = express.Router();
 
 // File upload setup
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const folder = `uploads/${file.fieldname}`;
-    fs.mkdirSync(folder, { recursive: true });
-    cb(null, folder);
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
-});
-
-const upload = multer({ storage });
-
-const fields = upload.fields([
-  { name: 'cover', maxCount: 1 },
-  { name: 'photos', maxCount: 10 }
-]);
-
-// Upload movie
 router.post('/', fields, async (req, res) => {
   try {
     const {
@@ -35,6 +17,10 @@ router.post('/', fields, async (req, res) => {
     const genres = req.body.genres ? JSON.parse(req.body.genres) : [];
     const countries = req.body.countries ? JSON.parse(req.body.countries) : [];
 
+    // Cloudinary provides URLs in req.files.[field][0].path
+    const coverPath = req.files?.cover?.[0]?.path || null;
+    const photoPaths = req.files?.photos?.map(file => file.path) || [];
+
     const movie = await Movie.create({
       title,
       description,
@@ -43,14 +29,12 @@ router.post('/', fields, async (req, res) => {
       quality,
       age,
       downloadLink,
-      coverPath: req.files?.cover?.[0]?.path.replace(/\\/g, "/") || null,
-      photoPaths: req.files?.photos?.map(p => p.path.replace(/\\/g, "/")) || [],
+      coverPath,
+      photoPaths,
       genres,
       countries
     });
-    console.log('Saved coverPath:', movie);  // e.g., "uploads/cover/filename.jpg"
 
-console.log('Saved coverPath:', movie.coverPath);  // e.g., "uploads/cover/filename.jpg"
     res.json({ message: 'Movie uploaded successfully', movie });
 
   } catch (error) {
@@ -64,10 +48,12 @@ router.get('/', async (req, res) => {
   try {
     const movies = await Movie.findAll();
     res.json(movies);
+
     // Optional: Log cover paths of movies if needed
     movies.forEach(movie => {
       console.log('Movie coverPath:', movie.coverPath);
     });
+
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch movies' });
   }
