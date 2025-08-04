@@ -80,6 +80,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // PUT /api/movies/:id
+// PUT /api/movies/:id
 router.put('/:id', fields, async (req, res) => {
   try {
     const movie = await Movie.findByPk(req.params.id);
@@ -87,33 +88,34 @@ router.put('/:id', fields, async (req, res) => {
       return res.status(404).json({ error: 'Movie not found' });
     }
 
-    // Parse JSON fields
+    // Parse JSON fields if they are stringified
     ['genres', 'countries', 'photoPaths'].forEach(field => {
       if (req.body[field] && typeof req.body[field] === 'string') {
         try {
           req.body[field] = JSON.parse(req.body[field]);
         } catch (e) {
-          console.error(`Error parsing ${field}:`, e);
+          console.warn(`Failed to parse ${field}:`, e.message);
         }
       }
     });
 
-    // If new files are uploaded, update file paths
+    // Handle updated image uploads from Cloudinary
     if (req.files?.cover?.length) {
-      req.body.coverPath = req.files.cover[0].path;
+      req.body.coverPath = req.files.cover[0].path; // Cloudinary gives full URL
     }
+
     if (req.files?.photos?.length) {
-      req.body.photoPaths = req.files.photos.map(p => p.path);
+      req.body.photoPaths = req.files.photos.map(photo => photo.path);
     }
 
     const updatedMovie = await movie.update(req.body);
-    res.json(updatedMovie);
+    res.json({ message: 'Movie updated successfully', updatedMovie });
+
   } catch (err) {
     console.error('PUT /api/movies/:id error:', err);
     res.status(500).json({ error: 'Failed to update movie' });
   }
 });
-
 
 
 // Backend - Express route pour un film par ID
