@@ -64,11 +64,15 @@ router.get('/', async (req, res) => {
   try {
     const movies = await Movie.findAll();
     res.json(movies);
-    console.log('Sending movie object with coverPath:', movie.coverPath);
+    // Optional: Log cover paths of movies if needed
+    movies.forEach(movie => {
+      console.log('Movie coverPath:', movie.coverPath);
+    });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch movies' });
   }
 });
+
 
 
 // DELETE movie by ID
