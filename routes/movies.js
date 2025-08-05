@@ -11,13 +11,14 @@ const router = express.Router();
 router.post('/', fields, async (req, res) => {
   try {
     const {
-      title, description, year, duration, quality, age, downloadLink
+      title, description, year, duration, quality, age, downloadLink,directors
     } = req.body;
 
     const genres = req.body.genres ? JSON.parse(req.body.genres) : [];
     const countries = req.body.countries ? JSON.parse(req.body.countries) : [];
     const subtitles = req.body.subtitles ? JSON.parse(req.body.subtitles) : [];
     const languages = req.body.languages ? JSON.parse(req.body.languages) : [];
+    const actors = req.body.actors ? JSON.parse(req.body.actors) : [];
 
     // Cloudinary provides URLs in req.files.[field][0].path
     const coverPath = req.files?.cover?.[0]?.path || null;
@@ -36,7 +37,9 @@ router.post('/', fields, async (req, res) => {
       genres,
       countries,
       subtitles,
-      languages
+      languages,
+      actors,
+      directors
     });
 
     res.json({ message: 'Movie uploaded successfully', movie });

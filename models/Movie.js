@@ -15,6 +15,9 @@ const Movie = sequelize.define('Movie', {
   genres: DataTypes.JSON,
     subtitles: DataTypes.JSON,
       languages: DataTypes.JSON,
+      actors: DataTypes.JSON,
+      directors: DataTypes.JSON,
+
 
 
 });
