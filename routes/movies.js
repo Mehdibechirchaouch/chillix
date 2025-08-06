@@ -58,7 +58,7 @@ router.get('/', async (req, res) => {
 
     // Optional: Log cover paths of movies if needed
     movies.forEach(movie => {
-      console.log('Movie coverPath:', movie.coverPath);
+      console.log('Movie coverPath:', movie.downloadLink);
     });
 
   } catch (err) {
