@@ -60,7 +60,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // Get all team members of type "Actors"
-router.get('/filter/type/actors', async (req, res) => {
+router.get('/filter/type/actor', async (req, res) => {
   try {
     const actors = await Team.findAll({ where: { type: 'Actor' } });
     res.json(actors);
