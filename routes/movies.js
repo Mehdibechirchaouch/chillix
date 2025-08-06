@@ -57,7 +57,10 @@ router.get('/', async (req, res) => {
   try {
     const movies = await Movie.findAll();
     res.json(movies);
-
+ // Optional: Log cover paths of movies if needed
+    movies.forEach(movie => {
+      console.log('Movie coverPath:', movie.downloadLink);
+    });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch movies' });
   }
