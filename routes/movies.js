@@ -56,11 +56,6 @@ router.get('/', async (req, res) => {
     const movies = await Movie.findAll();
     res.json(movies);
 
-    // Optional: Log cover paths of movies if needed
-    movies.forEach(movie => {
-      console.log('Movie coverPath:', movie.downloadLink);
-    });
-
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch movies' });
   }
@@ -96,7 +91,7 @@ router.put('/:id', fields, async (req, res) => {
     }
 
     // Parse JSON fields if they are stringified
-    ['genres', 'countries', 'photoPaths'].forEach(field => {
+    ['genres', 'countries', 'photoPaths','actors','directors','subtitles','languages'].forEach(field => {
       if (req.body[field] && typeof req.body[field] === 'string') {
         try {
           req.body[field] = JSON.parse(req.body[field]);
