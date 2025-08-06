@@ -19,5 +19,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/movies', require('./routes/movies'));
 app.use('/api/team', require('./routes/team'));
+app.use('/api/genres', require('./routes/genre'));
 
 module.exports = app;
