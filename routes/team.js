@@ -70,7 +70,7 @@ router.get('/filter/type/Actor', async (req, res) => {
 });
 
 // Get all team members of type "Directors"
-router.get('/filter/type/director', async (req, res) => {
+router.get('/filter/type/Director', async (req, res) => {
   try {
     const directors = await Team.findAll({ where: { type: 'Director' } });
     res.json(directors);
