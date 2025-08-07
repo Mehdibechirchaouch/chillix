@@ -2,6 +2,7 @@ const router = require('express').Router();
 const Series = require('../models/Series');
 const Season = require('../models/Season');
 const Episode = require('../models/Episode');
+const { fields } = require('../config/cloudinary'); // adjust path accordingly
 
 // Get all series with seasons and episodes
 router.get('/', async (req, res) => {
@@ -35,12 +36,38 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create a series
-router.post('/', async (req, res) => {
+// File upload setup (fields should be defined like in the movie route)
+router.post('/', fields, async (req, res) => {
   try {
-    const newSeries = await Series.create(req.body);
-    res.status(201).json(newSeries);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
+    const {
+      title,
+      description,
+      year,
+      age
+    } = req.body;
+
+    // Parse JSON fields if provided as strings
+    const genres = req.body.genres ? JSON.parse(req.body.genres) : [];
+    const countries = req.body.countries ? JSON.parse(req.body.countries) : [];
+
+    // Get the uploaded cover (same as Movie's coverPath)
+    const Picture = req.files?.cover?.[0]?.path || null;
+
+    const series = await Series.create({
+      title,
+      description,
+      year,
+      age,
+      Picture,
+      countries,
+      genres
+    });
+
+    res.json({ message: 'Series uploaded successfully', series });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Upload failed' });
   }
 });
 
