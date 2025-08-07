@@ -74,16 +74,42 @@ router.post('/', fields, async (req, res) => {
 });
 
 // Update a series
-router.put('/:id', async (req, res) => {
+router.put('/:id', fields, async (req, res) => {
   try {
     const series = await Series.findByPk(req.params.id);
-    if (!series) return res.status(404).json({ error: 'Series not found' });
-    await series.update(req.body);
-    res.json(series);
+    if (!series) {
+      return res.status(404).json({ error: 'Series not found' });
+    }
+
+    // Parse JSON fields if they are stringified
+    ['genres', 'countries', 'actors', 'directors', 'languages'].forEach(field => {
+      if (req.body[field] && typeof req.body[field] === 'string') {
+        try {
+          req.body[field] = JSON.parse(req.body[field]);
+        } catch (e) {
+          console.warn(`Failed to parse ${field}:`, e.message);
+        }
+      }
+    });
+
+    // Handle updated image uploads
+    if (req.files?.cover?.length) {
+      req.body.Picture = req.files.cover[0].path;
+    }
+
+    if (req.files?.photos?.length) {
+      req.body.photoPaths = req.files.photos.map(photo => photo.path);
+    }
+
+    const updatedSeries = await series.update(req.body);
+    res.json({ message: 'Series updated successfully', updatedSeries });
+
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    console.error('PUT /api/series/:id error:', err);
+    res.status(500).json({ error: 'Failed to update series' });
   }
 });
+
 
 // Delete a series
 router.delete('/:id', async (req, res) => {
