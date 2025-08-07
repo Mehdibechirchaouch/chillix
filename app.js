@@ -20,5 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/movies', require('./routes/movies'));
 app.use('/api/team', require('./routes/team'));
 app.use('/api/genre', require('./routes/genre'));
+app.use('/api/series', require('./routes/series'));
+app.use('/api/seasons', require('./routes/seasons'));
+app.use('/api/episodes', require('./routes/episodes'));
 
 module.exports = app;

@@ -3,7 +3,7 @@ const sequelize = require('./config/db');
 const seedAdmin = require('./utils/seedAdmin');
 require('dotenv').config();
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 10000;
 
 sequelize.sync({ alter: true }) // for dev
   .then(async () => {
