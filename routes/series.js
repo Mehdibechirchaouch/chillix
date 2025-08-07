@@ -43,8 +43,9 @@ router.post('/', fields, async (req, res) => {
       title,
       description,
       year,
-      age
-    } = req.body;
+      age,
+      trailerLink,
+        } = req.body;
 
     // Parse JSON fields if provided as strings
     const genres = req.body.genres ? JSON.parse(req.body.genres) : [];
@@ -60,7 +61,8 @@ router.post('/', fields, async (req, res) => {
       age,
       Picture,
       countries,
-      genres
+      genres,
+      trailerLink
     });
 
     res.json({ message: 'Series uploaded successfully', series });
