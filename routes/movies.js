@@ -15,6 +15,7 @@ router.post('/', fields, async (req, res) => {
       description,
       quality,
       age,
+      trailerLink,
     } = req.body;
 
     const year = parseInt(req.body.year, 10) || null;
@@ -51,7 +52,8 @@ router.post('/', fields, async (req, res) => {
       subtitles,
       languages,
       actors,
-      directors
+      directors,
+      trailerLink
     });
 
     res.json({ message: 'Movie uploaded successfully', movie });

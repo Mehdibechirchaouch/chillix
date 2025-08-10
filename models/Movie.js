@@ -17,7 +17,7 @@ downloadLinks: DataTypes.JSON,
       languages: DataTypes.JSON,
       actors: DataTypes.JSON,
       directors: DataTypes.JSON,
-
+trailerLink: DataTypes.STRING,
 
 
 });
