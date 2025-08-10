@@ -6,11 +6,9 @@ const seedAdmin = async () => {
   if (!exists) {
     const password = await bcrypt.hash('admin', 10);
     await User.create({
-      username: 'admin',
+      email: 'admin',
       password,
-      role: 'admin',
-      approved: true
-    });
+      role: 'admin'    });
     console.log('✅ Default admin created (username: admin, password: admin)');
   }
 };
