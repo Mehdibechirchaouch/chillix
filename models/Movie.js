@@ -8,7 +8,7 @@ const Movie = sequelize.define('Movie', {
   duration: DataTypes.INTEGER,
   quality: DataTypes.STRING,
   age: DataTypes.INTEGER,
-  downloadLink: DataTypes.STRING,
+downloadLinks: DataTypes.JSON,
   coverPath: DataTypes.STRING,
   photoPaths: DataTypes.JSON,
   countries: DataTypes.JSON,

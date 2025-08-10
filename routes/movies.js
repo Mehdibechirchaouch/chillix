@@ -11,18 +11,28 @@ const router = express.Router();
 router.post('/', fields, async (req, res) => {
   try {
     const {
-      title, description, year, duration, quality, age, downloadLink
+      title,
+      description,
+      quality,
+      age,
     } = req.body;
+
+    const year = parseInt(req.body.year, 10) || null;
+    const duration = parseInt(req.body.duration, 10) || null;
 
     const genres = req.body.genres ? JSON.parse(req.body.genres) : [];
     const countries = req.body.countries ? JSON.parse(req.body.countries) : [];
     const subtitles = req.body.subtitles ? JSON.parse(req.body.subtitles) : [];
     const languages = req.body.languages ? JSON.parse(req.body.languages) : [];
     const actors = req.body.actors ? JSON.parse(req.body.actors) : [];
-        const directors = req.body.directors ? JSON.parse(req.body.directors) : [];
+    const directors = req.body.directors ? JSON.parse(req.body.directors) : [];
+    const downloadLinks = req.body.downloadLinks ? JSON.parse(req.body.downloadLinks) : {
+      supplier1: [],
+      supplier2: [],
+      supplier3: [],
+      supplier4: []
+    };
 
-
-    // Cloudinary provides URLs in req.files.[field][0].path
     const coverPath = req.files?.cover?.[0]?.path || null;
     const photoPaths = req.files?.photos?.map(file => file.path) || [];
 
@@ -33,7 +43,7 @@ router.post('/', fields, async (req, res) => {
       duration,
       quality,
       age,
-      downloadLink,
+      downloadLinks,
       coverPath,
       photoPaths,
       genres,
@@ -93,7 +103,7 @@ router.put('/:id', fields, async (req, res) => {
     }
 
     // Parse JSON fields if they are stringified
-    ['genres', 'countries', 'photoPaths','actors','directors','subtitles','languages'].forEach(field => {
+    ['genres', 'countries', 'photoPaths','actors','directors','subtitles','languages','downloadLinks'].forEach(field => {
       if (req.body[field] && typeof req.body[field] === 'string') {
         try {
           req.body[field] = JSON.parse(req.body[field]);
