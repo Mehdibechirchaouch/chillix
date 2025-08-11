@@ -16,9 +16,9 @@ exports.login = async (req, res) => {
 
 
 exports.signup = async (req, res) => {
-  const { username,email, password } = req.body;
+  const { username,email, password,role } = req.body;
   const hash = await bcrypt.hash(password, 10);
-  await User.create({ username,email, password: hash }); // default sub-admin
+  await User.create({ username,email, password: hash,role }); // default sub-admin
   res.status(201).json({ message: 'Signup successful, awaiting approval' });
 };
 
