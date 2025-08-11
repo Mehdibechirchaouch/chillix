@@ -46,6 +46,7 @@ router.post('/', fields, async (req, res) => {
       year,
       age,
       trailerLink,
+      creator
         } = req.body;
 
     // Parse JSON fields if provided as strings
@@ -63,7 +64,8 @@ router.post('/', fields, async (req, res) => {
       Picture,
       countries,
       genres,
-      trailerLink
+      trailerLink,
+      creator
     });
 
     res.json({ message: 'Series uploaded successfully', series });

@@ -18,6 +18,7 @@ downloadLinks: DataTypes.JSON,
       actors: DataTypes.JSON,
       directors: DataTypes.JSON,
 trailerLink: DataTypes.STRING,
+  creator: DataTypes.STRING,
 
 
 });

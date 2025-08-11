@@ -10,6 +10,7 @@ const Series = sequelize.define('Series', {
   countries: DataTypes.JSON,
   genres: DataTypes.JSON,
   trailerLink: DataTypes.STRING,
+  creator: DataTypes.STRING,
 
 });
 
