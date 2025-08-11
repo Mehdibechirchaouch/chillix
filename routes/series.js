@@ -3,6 +3,7 @@ const Series = require('../models/Series');
 const Season = require('../models/Season');
 const Episode = require('../models/Episode');
 const { fields } = require('../config/cloudinary'); // adjust path accordingly
+const sequelize = require('../config/db');  // <--- Add this line here
 
 // Get all series with seasons and episodes
 router.get('/', async (req, res) => {
@@ -120,6 +121,25 @@ router.delete('/:id', async (req, res) => {
     res.json({ message: 'Series deleted' });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+
+router.get('/genre/:genre', async (req, res) => {
+  try {
+    const genre = req.params.genre;
+
+    const series = await Series.findAll({
+      where: sequelize.where(
+        sequelize.fn('JSON_CONTAINS', sequelize.col('genres'), JSON.stringify(genre)),
+        1
+      )
+    });
+
+    res.json(series);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch series by genre' });
   }
 });
 

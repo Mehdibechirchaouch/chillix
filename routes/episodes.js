@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Episode = require('../models/Episode');
+const sequelize = require('../config/db');  // <--- Add this line here
 
 // Create episode (requires seasonId)
 router.post('/', async (req, res) => {
@@ -35,6 +36,24 @@ router.delete('/:id', async (req, res) => {
     res.json({ message: 'Episode deleted' });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+
+
+// Get episodes by quality
+router.get('/quality/:quality', async (req, res) => {
+  try {
+    const quality = req.params.quality;
+
+    const episode = await Episode.findAll({
+      where: { quality }
+    });
+
+    res.json(episode);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch espisode by quality' });
   }
 });
 
