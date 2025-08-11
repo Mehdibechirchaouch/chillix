@@ -148,5 +148,42 @@ router.get('/:id', async (req, res) => {
 });
 
 
+router.get('/genre/:genre', async (req, res) => {
+  try {
+    const genre = req.params.genre;
+
+    const movies = await Movie.findAll({
+      where: sequelize.where(
+        sequelize.fn('JSON_CONTAINS', sequelize.col('genres'), JSON.stringify(genre)),
+        1
+      )
+    });
+
+    res.json(movies);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch movies by genre' });
+  }
+});
+
+
+// Get movies by quality
+router.get('/quality/:quality', async (req, res) => {
+  try {
+    const quality = req.params.quality;
+
+    const movies = await Movie.findAll({
+      where: { quality }
+    });
+
+    res.json(movies);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch movies by quality' });
+  }
+});
+
+
+
 
 module.exports = router;
