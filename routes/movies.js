@@ -4,6 +4,7 @@ const path = require('path'); // ✅ Déclaré une seule fois
 const fs = require('fs');
 const Movie = require('../models/Movie');
 const { fields } = require('../config/cloudinary'); // adjust path accordingly
+const sequelize = require('../config/db');  // <--- Add this line here
 
 const router = express.Router();
 
