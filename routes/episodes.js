@@ -1,17 +1,51 @@
 const router = require('express').Router();
 const Episode = require('../models/Episode');
 const sequelize = require('../config/db');  // <--- Add this line here
+const { fields } = require('../config/cloudinary'); // adjust path accordingly
 
 // Create episode (requires seasonId)
-router.post('/', async (req, res) => {
+router.post('/', fields, async (req, res) => {
   try {
+    const {
+      title,
+      description,
+      episodeNumber,
+      quality,
+      age,
+      duration,
+      trailerLink
+    } = req.body;
+
+    // Parsing fields if necessary
+    const downloadLinks = req.body.downloadLinks ? JSON.parse(req.body.downloadLinks) : {
+      supplier1: [],
+      supplier2: [],
+      supplier3: [],
+      supplier4: []
+    };
+
+    // File handling (if necessary)
+    const picture = req.files?.picture?.[0]?.path || null;
+
+    // Creating episode entry
     const episode = await Episode.create({
-      ...req.body,
-      SeasonId: req.body.seasonId
+      title,
+      description,
+      episodeNumber,
+      quality,
+      age,
+      duration,
+      downloadLinks,
+      picture,
+      trailerLink,
+      // Assuming you want to associate the episode with a season
+      SeasonId: req.body.seasonId 
     });
-    res.status(201).json(episode);
+
+    res.status(201).json({ message: 'Episode uploaded successfully', episode });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    console.error(err);
+    res.status(400).json({ error: 'Upload failed' });
   }
 });
 

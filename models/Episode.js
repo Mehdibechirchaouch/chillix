@@ -6,7 +6,7 @@ const Episode = sequelize.define('Episode', {
   title: { type: DataTypes.STRING, allowNull: false },
   episodeNumber: { type: DataTypes.INTEGER, allowNull: false },
   description: DataTypes.TEXT,
-  downloadLink: DataTypes.STRING,
+downloadLinks: DataTypes.JSON,
   duration: DataTypes.INTEGER,
   quality: DataTypes.STRING,
   age: DataTypes.INTEGER,
